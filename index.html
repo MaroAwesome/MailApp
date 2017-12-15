@@ -1,0 +1,414 @@
+
+
+
+
+<html ng-app="app">
+<head>
+    <title>Mail</title>
+    <meta charset="utf-8">
+    <script src="./node_modules/angular/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="app.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./node_modules/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/site.css">
+</head>
+
+<body>
+
+
+
+
+<div  id="wrapper" ng-controller="ctrl">
+    <!--Side bar-->
+    <div class="left topbar topbar-left pull-left" ng-show="isLogged">
+        <div class="" style="    padding-bottom: 20px; padding-top: 20px;">
+        <span class="side-nav side-nav-th-large">
+            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="..." class="avatar img-circle senden-img" style="width: 30px; height: 30px;">
+
+        </span>
+               <strong>{{myEmail}} </strong>
+        </div>
+        <div class="item active" ng-click = "newBtn()">
+            <i class="fa fa-file-text-o" aria-hidden="true" style="padding-left: 15px"></i>
+            <span class="side-nav side-nav-th-list "></span>
+
+            New Message
+        </div>
+        <div class="item" ng-click = "inboxBtn()">
+            <i class="fa fa-inbox" aria-hidden="true" style="padding-left: 15px"></i>
+            <span class="side-nav side-nav-log-out"></span>
+            Inbox
+           <!-- <span class="badge">11</span>-->
+        </div>
+        <div class="item" ng-click = "inboxBtn()" >
+            <i class="fa fa-archive" aria-hidden="true" style="padding-left: 15px"></i>
+            <span class="side-nav side-nav-log-in"></span>
+            Archived
+        </div>
+        <div class="item" ng-click = "sentBtn()">
+            <i class="fa fa-paper-plane-o" aria-hidden="true" style="padding-left: 15px"></i>
+            <span class="side-nav side-nav-random"></span>
+            Sent
+        </div>
+        <div class="item">
+            <i class="fa fa-cog" aria-hidden="true" style="padding-left: 15px"></i>
+            <span class="side-nav side-nav-remove"></span>
+            Settings
+        </div>
+    </div>
+
+
+    <!--Nav bar-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">{{nav}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
+                aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation" style="">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse"  id="navbarColor03">
+            <ul class="navbar-nav mr-auto">
+
+            </ul>
+            <form class="form-inline my-2 my-lg-0" ng-hide="navSearch">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" ng-model="search" id="search">
+                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <!--log in / register -->
+    <div class="container" ng-hide="isLogged">
+        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-info" >
+                <div class="panel-heading">
+                    <div class="panel-title">Sign In</div>
+                    <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Forgot password?</a></div>
+                </div>
+
+                <div style="padding-top:30px" class="panel-body" >
+
+                    <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+
+                    <form name="loginform" class="form-horizontal" role="form">
+
+                        <div style="margin-bottom: 25px" class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                            <input id="login-email" type="email" class="form-control" name="email" value="" placeholder="Your email" ng-model="myEmail" required>
+                        </div>
+
+                        <div style="margin-bottom: 25px" class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                            <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+                        </div>
+
+
+
+                        <div class="input-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div style="margin-top:10px" class="form-group">
+                            <!-- Button -->
+
+                            <div class="col-sm-12 controls">
+                                <button id="btn-login" ng-click="logIn(loginform.$valid )" class="btn btn-primary">Login  </button>
+
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-12 control">
+                                <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                                    Don't have an account!
+                                    <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+                                        Sign Up Here
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+
+                </div>
+            </div>
+        </div>
+        <div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="panel-title">Sign Up</div>
+                    <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()">Sign In</a></div>
+                </div>
+                <div class="panel-body" >
+                    <form name="signupform" class="form-horizontal" role="form">
+
+                        <div id="signupalert" style="display:none" class="alert alert-danger">
+                            <p>Error:</p>
+                            <span></span>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="email" class="col-md-3 control-label">Email</label>
+                            <div class="col-md-9">
+                                <input type="email" class="form-control" id="email" placeholder="Email Address" ng-model="myEmail" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="firstname" class="col-md-3 control-label">First Name</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="firstname" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname" class="col-md-3 control-label">Last Name</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="lastname" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-md-3 control-label">Password</label>
+                            <div class="col-md-9">
+                                <input type="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="icode" class="col-md-3 control-label">Invitation Code</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="icode" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <!-- Button -->
+                            <div class="col-md-offset-3 col-md-9">
+                                <button id="btn-signup" ng-click="logIn(signupform.$valid) "  type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
+
+                            </div>
+                        </div>
+
+                        <div style="border-top: 1px solid #999; padding-top:20px"  class="form-group">
+
+
+                        </div>
+
+
+
+                    </form>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+    <!--New Message-->
+    <div  id="new"  ng-show="new && isLogged" style="margin-left: 27.5%" class="container col-md-8">
+        <form name="newMsg" class="col-md-10">
+            <br>
+            <div class="form-group col-md-10 row" ng-class="{ 'has-error' : newMsg.to.$invalid && !newMsg.to.$pristine }">
+                <label for="to"  >To:  </label>
+                <input type="email"  name="to" class="form-control" id="to" ng-model='msg.to' placeholder="To" required="true" >
+                <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">You name is required.</p>
+            </div>
+            <div class="form-group col-md-10 row">
+                <label for="cc">cc: </label>
+                <input type="email" class="form-control" ng-model="msg.cc" id="cc" placeholder="cc">
+                </div>
+            <div class="form-group col-md-10 row">
+                <label for="Title">Title: </label>
+                <input type="text" class="form-control" ng-model="msg.Title" id="Title" placeholder="Title">
+            </div>
+            <div class="form-group col-md-10 row">
+                <label for="message">Message</label>
+                <textarea class="form-control" id="message" ng-model="msg.text" placeholder="Type your Message"
+                          style="height: 270px;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-offset-2 col-lg-10">
+                                                      <span >
+                                                        <i class="fa fa-plus fa fa-white"></i>
+                                                        <span>Attachment</span>
+                                                        <input class="btn btn-secondary" type="file" name="files[]" multiple="">
+                                                      </span>
+                    <button class="btn btn-primary" ng-click="send(newMsg.$valid)" ng-attr-data-toggle="{{newMsg.$valid ? 'modal' : ''}}"  data-target="#myModal" type="submit">Send</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <!--Inbox-->
+    <div id="inbox" class="container-fluid" ng-show="inbox  && isLogged"  >
+        <div class=" row row-fluid">
+            <div class="col-lg-12">
+                <table class="table table-responsive-sm  table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">From</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Content</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="table-secondary" ng-click="goToMsg(msgs[27])">
+                        <td>{{msgs[27].from}}</td>
+                        <td scope="row">{{msgs[27].title}}</td>
+                        <td class="ellipsis">{{msgs[27].text}}</td>
+                        <td>{{msgs[27].date | date:'MMM-dd-yyyy h:mm a'}}</td>
+                    </tr>
+                    <tr class="table-secondary"  ng-click="goToMsg(msgs[15])">
+                        <td>{{msgs[15].from}}</td>
+                        <td scope="row">{{msgs[15].title}}</td>
+                        <td class="ellipsis">{{msgs[15].text}}</td>
+                        <td>{{msgs[15].date | date:'MMM-dd-yyyy h:mm a'}}</td>
+                    </tr>
+                    <tr class="table-secondary"  ng-click="goToMsg(msgs[20])">
+                        <td>{{msgs[20].from}}</td>
+                        <td scope="row">{{msgs[20].title}}</td>
+                        <td class="ellipsis">{{msgs[20].text}}</td>
+                        <td>{{msgs[20].date | date:'MMM-dd-yyyy h:mm a'}}</td>
+                    </tr>
+                    <tr ng-click="goToMsg(msg)"
+                        ng-repeat="msg in msgs | filter:search | orderBy:sortField:reverse">
+                        <td>{{msg.from}}</td>
+                        <td scope="row">{{msg.title}}</td>
+                        <td class="ellipsis">{{msg.text}}</td>
+                        <td>{{msg.date | date:'MMM-dd-yyyy h:mm a'}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--sent-->
+    <div id="sent" class="container-fluid" ng-show="sent  && isLogged"   >
+        <div class=" row row-fluid">
+            <div class="col-lg-12">
+                <table class="table table-responsive-sm  table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Sent to</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Content</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-click="goToMsgSent(msg)"
+                        ng-repeat="msg in msgs | filter:search | limitTo: 12| orderBy:sortField:reverse">
+                        <td>{{msg.from}}</td>
+                        <td scope="row">{{msg.title}}</td>
+                        <td class="ellipsis">{{msg.text}}</td>
+                        <td>{{msg.date | date:'MMM-dd-yyyy h:mm a'}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--Message-->
+    <div ng-show="emailView  && isLogged">
+    <div class="panel-sub-heading inner-all" >
+        <div class="row">
+            <div class="col-md-8 col-sm-8 col-xs-7">
+                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="..." class="avatar img-circle senden-img">
+                <span style="margin-left: 3%">{{tMsg.from}}</span>
+                to
+                <strong>me</strong>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-5">
+                <p class="pull-right"> {{tMsg.date | date:'MMM-dd-yyyy h:mm a'}}</p>
+            </div>
+        </div>
+    </div><!-- /.panel-sub-heading -->
+    <br>
+    <div class="panel-body" style="margin-left: 8%">
+        <div class="col-6">
+            <p>
+                {{tMsg.text}}
+           </p>
+        </div><!-- /.view-mail -->
+        </div>
+<br> <br>
+        <div class="row">
+            <div class="col-6" style="margin-left: 50%">
+            <button class="btn btn-primary"><i class="fa fa-reply" aria-hidden="true"></i> Reply </button>
+            <button class="btn btn-primary"><i class="fa fa-share" aria-hidden="true"></i> Forward </button>
+</div>
+        </div>
+    </div>
+
+    <!--Message Sent-->
+    <div ng-show="emailSentView  && isLogged">
+    <div class="panel-sub-heading inner-all" >
+        <div class="row">
+            <div class="col-md-8 col-sm-8 col-xs-7">
+                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="..." class="avatar img-circle senden-img">
+                <strong>me</strong>
+                to
+                <span style="margin-left: 3%">{{tMsg.to}}</span>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-5">
+                <p class="pull-right"> {{tMsg.date | date:'MMM-dd-yyyy h:mm a'}}</p>
+            </div>
+        </div>
+    </div><!-- /.panel-sub-heading -->
+    <br>
+    <div class="panel-body" style="margin-left: 8%">
+        <div class="col-6">
+            <p>
+                {{tMsg.text}}
+           </p>
+        </div><!-- /.view-mail -->
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Message Sent</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                    Your Message was sent successfully to {{msg.to}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+</body>
+</html>

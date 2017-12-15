@@ -1,0 +1,25 @@
+{
+  "name": "mail-app",
+  "version": "1.0.0",
+  "description": "this is an interview assignment for tcc ",
+  "main": "app.js",
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaroAwesome/mail-app.git"
+  },
+  "author": "Ammar Abed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaroAwesome/mail-app/issues"
+  },
+  "homepage": "https://github.com/MaroAwesome/mail-app#readme",
+  "devDependencies": {
+    "font-awesome": "^4.7.0"
+  },
+  "dependencies": {
+    "ng-notifications-bar": "0.0.16"
+  }
+}
