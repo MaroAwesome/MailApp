@@ -20,6 +20,7 @@
     "font-awesome": "^4.7.0"
   },
   "dependencies": {
+    "angular": "^1.6.7",
     "ng-notifications-bar": "0.0.16"
   }
 }
