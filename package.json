@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MaroAwesome/mail-app.git"
+    "url": "git+https://github.com/MaroAwesome/MailApp.git"
   },
   "author": "Ammar Abed",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MaroAwesome/mail-app/issues"
+    "url": "https://github.com/MaroAwesome/MailApp/issues"
   },
-  "homepage": "https://github.com/MaroAwesome/mail-app#readme",
+  "homepage": "https://github.com/MaroAwesome/MailApp#readme",
   "devDependencies": {
     "font-awesome": "^4.7.0"
   },
